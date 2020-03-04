@@ -49,7 +49,7 @@ class Backup
         }
     }
 
-    private function gitignore()
+    private function gitignore(): void
     {
         if(Storage::disk('dbbackup')->missing('.gitignore')) {
             Storage::disk('dbbackup')->put('.gitignore', "*\n!.gitignore");
