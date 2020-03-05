@@ -1,0 +1,54 @@
+name: "Run Tests"
+on: [push, pull_request]
+job:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mariadb:latest
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_DATABASE: test
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.2, 7.3, 7.4]
+        laravel: [6.*, 7.*]
+        dependency-version: [prefer-lowest, prefer-stable]
+          include:
+            - laravel: 7.*
+              testbench: 5.*
+            - laravel: 6.*
+              testbench: 4.*
+            - laravel: 5.8.*
+              testbench: 3.8.*
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, zip, pcntl, pdo_mysql
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "symfony/console:>=4.3.4" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "symfony/console:>=4.3.4" --no-interaction --no-update
+      - name: Execute tests
+        run: vendor/bin/phpunit
