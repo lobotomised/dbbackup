@@ -15,7 +15,8 @@ class Backup
         $this->gitignore();
 
         $command = sprintf(
-            'mysqldump --default-character-set=utf8mb4 -u%s -p%s %s > %s',
+            'mysqldump --default-character-set=utf8mb4 -h%s -u%s -p%s %s > %s',
+            config('database.connections.mysql.host'),
             config('database.connections.mysql.username'),
             config('database.connections.mysql.password'),
             config('database.connections.mysql.database'),
