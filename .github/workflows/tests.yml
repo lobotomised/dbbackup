@@ -45,6 +45,8 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: mbstring, zip, pcntl, pdo_mysql
       - name: Install dependencies
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
