@@ -17,7 +17,7 @@ class Backup
         $command = sprintf(
             'mysqldump --default-character-set=utf8mb4 --host=%s --port=%s --user=%s --password=%s %s > %s',
             config('database.connections.mysql.host'),
-            config('database.connexions.mysql.port'),
+            config('database.connections.mysql.port'),
             config('database.connections.mysql.username'),
             config('database.connections.mysql.password'),
             config('database.connections.mysql.database'),
