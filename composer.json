@@ -1,0 +1,40 @@
+{
+    "name": "lobotomised/dbbackup",
+    "description": "A databases backup tools for laravel",
+    "keywords": ["laravel", "database", "backup"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "lobotomised",
+            "email": "contact@lobotomised.net"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "illuminate/console": "^6.0|^7.0",
+        "illuminate/database": "^6.0|^7.0",
+        "illuminate/support": "^6.0|^7.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lobotomised\\Dbbackup\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lobotomised\\Dbbackup\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lobotomised\\Dbbackup\\ServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
