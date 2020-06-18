@@ -68,6 +68,7 @@ class Backup
 [client]
 user="$user"
 password="$password"
+
 EOT;
 
             Storage::disk('dbbackup')->put('mysqldump.cnf', $content);
@@ -82,4 +83,5 @@ EOT;
             Storage::disk('dbbackup')->delete('mysqldump.cnf');
         }
     }
+
 }
