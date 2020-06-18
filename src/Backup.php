@@ -29,6 +29,8 @@ class Backup
 
         $process->mustRun();
 
+        $this->removeMysqlConfFile();
+
         return $process->isSuccessful();
     }
 
@@ -72,5 +74,12 @@ EOT;
         }
 
         return Storage::disk('dbbackup')->getDriver()->getAdapter()->getPathPrefix() . 'mysqldump.cnf';
+    }
+
+    private function removeMysqlConfFile(): void
+    {
+        if(Storage::disk('dbbackup')->exists('mysqldump.cnf')) {
+            Storage::disk('dbbackup')->delete('mysqldump.cnf');
+        }
     }
 }
