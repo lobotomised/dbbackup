@@ -17,7 +17,7 @@ class Backup
         $client = $this->createMysqlConfFile(config('database.connections.mysql.username'), config('database.connections.mysql.password'));
 
         $command = sprintf(
-            'mysqldump --default-character-set=utf8mb4 --defaults-file=%s --host=%s --port=%s %s > %s',
+            'mysqldump --defaults-file=%s --default-character-set=utf8mb4 --host=%s --port=%s %s > %s',
             $client,
             config('database.connections.mysql.host'),
             config('database.connections.mysql.port'),
