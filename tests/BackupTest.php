@@ -92,4 +92,12 @@ class BackupTest extends TestCase
         $this->assertNotEmpty($value);
     }
 
+    /** @test **/
+    public function it_remove_config_file_after_backup_is_done(): void
+    {
+        $this->artisan('db:backup');
+
+        $this->assertFalse(Storage::disk('dbbackup')->exists('mysqldump.cnf'));
+    }
+
 }

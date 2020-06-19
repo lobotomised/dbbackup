@@ -14,12 +14,13 @@ class Backup
     {
         $this->gitignore();
 
+        $client = $this->createMysqlConfFile(config('database.connections.mysql.username'), config('database.connections.mysql.password'));
+
         $command = sprintf(
-            'mysqldump --default-character-set=utf8mb4 --host=%s --port=%s --user=%s --password=%s %s > %s',
+            'mysqldump --defaults-file=%s --default-character-set=utf8mb4 --host=%s --port=%s %s > %s',
+            $client,
             config('database.connections.mysql.host'),
             config('database.connections.mysql.port'),
-            config('database.connections.mysql.username'),
-            config('database.connections.mysql.password'),
             config('database.connections.mysql.database'),
             Storage::disk('dbbackup')->getDriver()->getAdapter()->getPathPrefix() . date('Ymd-His').'.sql'
         );
@@ -27,6 +28,8 @@ class Backup
         $process = Process::fromShellCommandline($command);
 
         $process->mustRun();
+
+        $this->removeMysqlConfFile();
 
         return $process->isSuccessful();
     }
@@ -57,4 +60,28 @@ class Backup
             Storage::disk('dbbackup')->put('.gitignore', "*\n!.gitignore");
         }
     }
+
+    public function createMysqlConfFile(string $user, string $password): string
+    {
+        if(!Storage::disk('dbbackup')->exists('mysqldump.cnf')) {
+            $content = <<< EOT
+[client]
+user="$user"
+password="$password"
+
+EOT;
+
+            Storage::disk('dbbackup')->put('mysqldump.cnf', $content);
+        }
+
+        return Storage::disk('dbbackup')->getDriver()->getAdapter()->getPathPrefix() . 'mysqldump.cnf';
+    }
+
+    private function removeMysqlConfFile(): void
+    {
+        if(Storage::disk('dbbackup')->exists('mysqldump.cnf')) {
+            Storage::disk('dbbackup')->delete('mysqldump.cnf');
+        }
+    }
+
 }
