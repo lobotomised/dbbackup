@@ -1,4 +1,4 @@
-name: "Run Tests"
+name: "Run Tests for laravel6 & 7"
 on: [push, pull_request]
 jobs:
   test:
