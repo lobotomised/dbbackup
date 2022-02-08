@@ -12,6 +12,7 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     env:
       APP_ENV: testing
       DB_CONNECTION: mysql
@@ -24,12 +25,13 @@ jobs:
       matrix:
         php: [8.0, 8.1]
         laravel: [8.*, 9.*]
-        dependency-version: [prefer-lowest, prefer-stable]
+        stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 9.*
             testbench: 7.*
           - laravel: 8.*
-            testbench: 6.*
+            testbench: ^6.23
+
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
     steps:
       - name: Checkout
@@ -47,7 +49,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
       - name: Execute tests
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
