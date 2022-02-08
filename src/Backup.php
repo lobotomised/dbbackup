@@ -22,7 +22,7 @@ class Backup
             config('database.connections.mysql.host'),
             config('database.connections.mysql.port'),
             config('database.connections.mysql.database'),
-            Storage::disk('dbbackup')->getDriver()->getAdapter()->getPathPrefix() . date('Ymd-His').'.sql'
+            Storage::disk('dbbackup')->path(date('Ymd-His').'.sql')
         );
 
         $process = Process::fromShellCommandline($command);
@@ -74,7 +74,7 @@ EOT;
             Storage::disk('dbbackup')->put('mysqldump.cnf', $content);
         }
 
-        return Storage::disk('dbbackup')->getDriver()->getAdapter()->getPathPrefix() . 'mysqldump.cnf';
+        return Storage::disk('dbbackup')->path('mysqldump.cnf');
     }
 
     private function removeMysqlConfFile(): void
