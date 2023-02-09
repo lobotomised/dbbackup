@@ -15,7 +15,7 @@ class RunBackup extends Command
 
     protected $description = 'Backup the database';
 
-    /** @var \Lobotomised\Dbbackup\Backup*/
+    /** @var \Lobotomised\Dbbackup\Backup */
     private $backup;
 
     public function __construct(Backup $backup)
@@ -29,15 +29,14 @@ class RunBackup extends Command
     {
         $this->info('Backup database start');
 
-        if($this->backup->run()) {
+        if ($this->backup->run()) {
             $this->info('Backup database done');
         } else {
             $this->error('Backup failed');
         }
 
-        if($this->option('delete')) {
-            $this->backup->removeOld((int)$this->option('keep'));
+        if ($this->option('delete')) {
+            $this->backup->removeOld((int) $this->option('keep'));
         }
-
     }
 }

@@ -40,7 +40,7 @@ class BackupTest extends TestCase
     /** @test **/
     public function it_dont_delete_file(): void
     {
-        Storage::disk('dbbackup')->put('19700101-000000.sql','');
+        Storage::disk('dbbackup')->put('19700101-000000.sql', '');
 
         $this->artisan('db:backup');
 
@@ -50,11 +50,11 @@ class BackupTest extends TestCase
     /** @test **/
     public function it_delete_old_file(): void
     {
-        Storage::disk('dbbackup')->put('19700105-000000.sql','');
-        Storage::disk('dbbackup')->put('19700104-000000.sql','');
-        Storage::disk('dbbackup')->put('19700103-000000.sql','');
-        Storage::disk('dbbackup')->put('19700102-000000.sql','');
-        Storage::disk('dbbackup')->put('19700101-000000.sql','');
+        Storage::disk('dbbackup')->put('19700105-000000.sql', '');
+        Storage::disk('dbbackup')->put('19700104-000000.sql', '');
+        Storage::disk('dbbackup')->put('19700103-000000.sql', '');
+        Storage::disk('dbbackup')->put('19700102-000000.sql', '');
+        Storage::disk('dbbackup')->put('19700101-000000.sql', '');
 
         $this->artisan('db:backup --delete');
 
@@ -68,8 +68,8 @@ class BackupTest extends TestCase
     /** @test **/
     public function it_can_delete_old_file_and_keep_some(): void
     {
-        Storage::disk('dbbackup')->put('19700102-000000.sql','');
-        Storage::disk('dbbackup')->put('19700101-000000.sql','');
+        Storage::disk('dbbackup')->put('19700102-000000.sql', '');
+        Storage::disk('dbbackup')->put('19700101-000000.sql', '');
 
         $this->artisan('db:backup --delete --keep=1');
 
@@ -99,5 +99,4 @@ class BackupTest extends TestCase
 
         $this->assertFalse(Storage::disk('dbbackup')->exists('mysqldump.cnf'));
     }
-
 }

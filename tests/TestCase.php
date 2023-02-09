@@ -2,15 +2,15 @@
 
 namespace Lobotomised\Dbbackup\Test;
 
-use Lobotomised\Dbbackup\ServiceProvider;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
+use Lobotomised\Dbbackup\ServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     protected function getPackageProviders($app)
     {
         return [
-            ServiceProvider::class
+            ServiceProvider::class,
         ];
     }
 
@@ -28,6 +28,5 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
         ]);
-
     }
 }

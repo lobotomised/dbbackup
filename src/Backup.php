@@ -9,7 +9,6 @@ use Symfony\Component\Process\Process;
 
 class Backup
 {
-
     public function run(): bool
     {
         $this->gitignore();
@@ -41,7 +40,7 @@ class Backup
         $sql_files = [];
         foreach ($files as $file) {
             if (preg_match('/([\d]{4})([\d]{2})([\d]{2})-([\d]{2})([\d]{2})([\d]{2}).sql/D', $file, $matches)) {
-                $sql_files[ $matches[1].$matches[2].$matches[3].$matches[4].$matches[5].$matches[6]] = $file;
+                $sql_files[$matches[1].$matches[2].$matches[3].$matches[4].$matches[5].$matches[6]] = $file;
             }
         }
 
@@ -56,14 +55,14 @@ class Backup
 
     private function gitignore(): void
     {
-        if(!Storage::disk('dbbackup')->exists('.gitignore')) {
+        if (! Storage::disk('dbbackup')->exists('.gitignore')) {
             Storage::disk('dbbackup')->put('.gitignore', "*\n!.gitignore");
         }
     }
 
     public function createMysqlConfFile(string $user, string $password): string
     {
-        if(!Storage::disk('dbbackup')->exists('mysqldump.cnf')) {
+        if (! Storage::disk('dbbackup')->exists('mysqldump.cnf')) {
             $content = <<< EOT
 [client]
 user="$user"
@@ -79,9 +78,8 @@ EOT;
 
     private function removeMysqlConfFile(): void
     {
-        if(Storage::disk('dbbackup')->exists('mysqldump.cnf')) {
+        if (Storage::disk('dbbackup')->exists('mysqldump.cnf')) {
             Storage::disk('dbbackup')->delete('mysqldump.cnf');
         }
     }
-
 }
