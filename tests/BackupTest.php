@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class BackupTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
