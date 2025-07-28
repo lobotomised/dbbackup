@@ -15,8 +15,7 @@ class BackupTest extends TestCase
         Storage::fake('dbbackup');
     }
 
-    /** @test **/
-    public function it_can_generate_backup(): void
+    public function test_it_can_generate_backup(): void
     {
         $this->artisan('db:backup')
             ->assertExitCode(0);
@@ -28,8 +27,7 @@ class BackupTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /** @test **/
-    public function it_create_gitignore_file(): void
+    public function test_it_create_gitignore_file(): void
     {
         $this->artisan('db:backup')
             ->assertExitCode(0);
@@ -37,8 +35,7 @@ class BackupTest extends TestCase
         Storage::disk('dbbackup')->assertExists('.gitignore');
     }
 
-    /** @test **/
-    public function it_dont_delete_file(): void
+    public function test_it_dont_delete_file(): void
     {
         Storage::disk('dbbackup')->put('19700101-000000.sql', '');
 
@@ -47,8 +44,7 @@ class BackupTest extends TestCase
         Storage::disk('dbbackup')->assertExists('19700101-000000.sql');
     }
 
-    /** @test **/
-    public function it_delete_old_file(): void
+    public function test_it_delete_old_file(): void
     {
         Storage::disk('dbbackup')->put('19700105-000000.sql', '');
         Storage::disk('dbbackup')->put('19700104-000000.sql', '');
@@ -65,8 +61,7 @@ class BackupTest extends TestCase
         $this->assertCount(5, $matches);
     }
 
-    /** @test **/
-    public function it_can_delete_old_file_and_keep_some(): void
+    public function test_it_can_delete_old_file_and_keep_some(): void
     {
         Storage::disk('dbbackup')->put('19700102-000000.sql', '');
         Storage::disk('dbbackup')->put('19700101-000000.sql', '');
@@ -80,8 +75,7 @@ class BackupTest extends TestCase
         $this->assertCount(1, $matches);
     }
 
-    /** @test **/
-    public function it_generate_a_note_empty_file(): void
+    public function test_it_generate_a_note_empty_file(): void
     {
         $this->artisan('db:backup');
 
@@ -92,8 +86,7 @@ class BackupTest extends TestCase
         $this->assertNotEmpty($value);
     }
 
-    /** @test **/
-    public function it_remove_config_file_after_backup_is_done(): void
+    public function test_it_remove_config_file_after_backup_is_done(): void
     {
         $this->artisan('db:backup');
 
