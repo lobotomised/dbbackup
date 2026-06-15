@@ -15,7 +15,7 @@ class RunBackup extends Command
 
     protected $description = 'Backup the database';
 
-    /** @var \Lobotomised\Dbbackup\Backup */
+    /** @var Backup */
     private $backup;
 
     public function __construct(Backup $backup)
